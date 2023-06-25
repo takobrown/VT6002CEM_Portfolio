@@ -76,7 +76,7 @@ class WriteDiaryActivity : AppCompatActivity() {
             }
 
             diaryBean.content = inflate.content.text.toString()
-            diaryBean.date = inflate.content.text.toString()
+            diaryBean.date = inflate.date.text.toString()
             diaryBean.location = inflate.location.text.toString()
 
 
