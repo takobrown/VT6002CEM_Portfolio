@@ -54,7 +54,7 @@ class WriteDiaryActivity : AppCompatActivity() {
         }
         inflate.clear.setOnClickListener {
             inflate.date.setText("")
-            inflate.location.text = "**"
+            inflate.location.text = "Loading..."
             Glide.with(this@WriteDiaryActivity).load(R.mipmap.ic_add).into(inflate.iv)
             inflate.content.setText("")
 

@@ -51,8 +51,7 @@ class LocationUnitTest {
         // Invoke the method under test
         getLocation(latitude, longitude)
 
-        // TODO: Add assertions to verify the behavior or state after invoking the method
-        // For example, you can verify if the address is set correctly in the UI component
+
     }
 
     @Test
@@ -67,11 +66,9 @@ class LocationUnitTest {
         // Invoke the method under test
         getLocation(latitude, longitude)
 
-        // TODO: Add assertions to verify the behavior or state after invoking the method
-        // For example, you can verify if the appropriate error handling is done, like showing a toast message
+
     }
 
-    // Other test cases can be added based on different scenarios, such as network errors, empty responses, etc.
 
     private fun getLocation(latitude: Double, longitude: Double) {
         val okHttpClient = OkHttpClient()
@@ -86,11 +83,11 @@ class LocationUnitTest {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful) {
-                    val string = response.body()?.string()
+                val responseBody = response.body()
+                if (response.isSuccessful && responseBody != null) {
+                    val string = responseBody.string()
                     val fromJson = Gson().fromJson(string, AddressBean::class.java)
                     val get = fromJson?.data?.get(0)
-                    // Update UI component with the address
                 }
             }
         })
