@@ -3,6 +3,7 @@ import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import com.mobile.diary.AddressBean
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -56,14 +57,13 @@ class LocationUnitTest {
 
     @Test
     fun testGetLocation_Failure() {
-        // Prepare the mock response for failure scenario
+
         mockWebServer.enqueue(MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND))
 
-        // Set up the test location
+
         val latitude = 37.7749
         val longitude = -122.4194
 
-        // Invoke the method under test
         getLocation(latitude, longitude)
 
     }
@@ -82,7 +82,7 @@ class LocationUnitTest {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body()
+                val responseBody = response.body
                 if (response.isSuccessful && responseBody != null) {
                     val string = responseBody.string()
                     val fromJson = Gson().fromJson(string, AddressBean::class.java)
