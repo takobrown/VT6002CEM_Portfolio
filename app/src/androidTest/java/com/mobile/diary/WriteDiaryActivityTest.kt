@@ -56,6 +56,24 @@ class WriteDiaryActivityTest {
     }
 
 
+    @Test
+    fun testPickDateButton_Click() {
+        // Perform click on the pick date button
+        Espresso.onView(ViewMatchers.withId(R.id.date)).perform(ViewActions.click())
+    }
+
+    @Test
+    fun testCameraButton_Click() {
+        // Perform click on the camera button
+        Espresso.onView(ViewMatchers.withId(R.id.takephoto)).perform(ViewActions.click())
+    }
+
+    @Test
+    fun testClearButton_Click() {
+        // Perform click on the clear button
+        Espresso.onView(ViewMatchers.withId(R.id.clear)).perform(ViewActions.click())
+
+    }
 
 
 }
