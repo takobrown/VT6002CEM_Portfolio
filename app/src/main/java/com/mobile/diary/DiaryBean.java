@@ -9,10 +9,10 @@ public class DiaryBean {
     @Override
     public String toString() {
         return "DiaryBean{" +
-                "date='" + date + '\'' +
-                ", location='" + location + '\'' +
-                ", photoPath='" + photoPath + '\'' +
-                ", content='" + content + '\'' +
+                "Date='" + date + '\'' +
+                ", Location='" + location + '\'' +
+                ", PhotoPath='" + photoPath + '\'' +
+                ", Content='" + content + '\'' +
                 '}';
     }
 

@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#666"
                     android:textSize="14dp"
-                    tools:text="V1.0.0" />
+                    tools:text="V1.3" />
             </LinearLayout>
 
             <View
