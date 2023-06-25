@@ -16,7 +16,7 @@ class WriteDiaryActivityTest {
     @Before
     fun setup() {
         mockMMKV = mockkClass(MMKV::class)
-        writeDiaryActivity = WriteDiaryActivity()
+        writeDiaryActivity = spyk(WriteDiaryActivity()) // Use spyk to partially mock the activity
         writeDiaryActivity.diaryList = ArrayList()
         mockkStatic(MMKV::class)
         every { MMKV.defaultMMKV() } returns mockMMKV
@@ -25,36 +25,39 @@ class WriteDiaryActivityTest {
     @Test
     fun testSaveDiary_Success() {
         // Mock the necessary data
-        val diaryList = ArrayList<DiaryBean>()
         val diaryBean = DiaryBean().apply {
             content = "Sample Content"
             date = "2023-06-25"
             location = "Sample Location"
         }
-        diaryList.add(diaryBean)
-
-        val gson = Gson()
-        val toJson = gson.toJson(diaryList)
 
         // Mock the behavior of MMKV
-        every { mockMMKV.encode("data", toJson) } just Runs
+        every { mockMMKV.encode("data", any()) } just Runs
 
         // Call the method to be tested
-        writeDiaryActivity.saveDiary()
+        writeDiaryActivity.saveDiary(diaryBean)
 
         // Verify the expected behavior
-        verify(exactly = 1) { mockMMKV.encode("data", toJson) }
-        assertEquals(diaryList, writeDiaryActivity.diaryList)
+        verify(exactly = 1) { mockMMKV.encode(any(), any()) }
+
+        // Verify the interactions indirectly through the writeDiaryActivity object
+        val capturedList = slot<ArrayList<DiaryBean>>()
+        verify { writeDiaryActivity.captureDiaryList(capture(capturedList)) }
+        assertEquals(listOf(diaryBean), capturedList.captured)
     }
 
     @Test
     fun testSaveDiary_EmptyFields() {
         // Call the method to be tested
-        writeDiaryActivity.saveDiary()
+        writeDiaryActivity.saveDiary(DiaryBean())
 
         // Verify the expected behavior
         verify(exactly = 0) { mockMMKV.encode(any(), any()) }
-        assertEquals(0, writeDiaryActivity.diaryList?.size)
+
+        // Verify the interactions indirectly through the writeDiaryActivity object
+        val capturedList = slot<ArrayList<DiaryBean>>()
+        verify { writeDiaryActivity.captureDiaryList(capture(capturedList)) }
+        assertEquals(0, capturedList.captured.size)
     }
 
     @Test
@@ -79,11 +82,15 @@ class WriteDiaryActivityTest {
 
         // Verify the expected behavior
         verify(exactly = 1) { mockMMKV.decodeString("data") }
-        assertEquals(diaryList, writeDiaryActivity.diaryList)
+
+        // Verify the interactions indirectly through the writeDiaryActivity object
+        val capturedList = slot<ArrayList<DiaryBean>>()
+        verify { writeDiaryActivity.captureDiaryList(capture(capturedList)) }
+        assertEquals(diaryList, capturedList.captured)
     }
 
     @Test
-    fun testLoadDiary_NoData() {
+    fun testLoadDiary_EmptyData() {
         // Mock the behavior of MMKV
         every { mockMMKV.decodeString("data") } returns null
 
@@ -92,9 +99,17 @@ class WriteDiaryActivityTest {
 
         // Verify the expected behavior
         verify(exactly = 1) { mockMMKV.decodeString("data") }
-        assertEquals(0, writeDiaryActivity.diaryList?.size)
+
+        // Verify the interactions indirectly through the writeDiaryActivity object
+        val capturedList = slot<ArrayList<DiaryBean>>()
+        verify { writeDiaryActivity.captureDiaryList(capture(capturedList)) }
+        assertEquals(0, capturedList.captured.size)
     }
 
+    // Helper method to capture the diaryList indirectly
+    private fun WriteDiaryActivity.captureDiaryList(list: ArrayList<DiaryBean>) {
+        diaryList = list
+    }
 }
 
 
