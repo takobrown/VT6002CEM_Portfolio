@@ -240,7 +240,8 @@ class WriteDiaryActivity : AppCompatActivity() {
 
                     override fun onResponse(call: Call, response: Response) {
                         if (response.isSuccessful) {
-                            val string = response.body()?.string()
+                            //val string = response.body()?.string()
+                            val string = response.body?.string()
                             val fromJson = Gson().fromJson(string, AddressBean::class.java)
                             val get = fromJson?.data?.get(0)
                             runOnUiThread {
