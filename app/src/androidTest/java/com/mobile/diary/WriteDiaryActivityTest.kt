@@ -15,9 +15,7 @@ import io.mockk.slot
 import io.mockk.spyk
 import io.mockk.verify
 import io.mockk.mockkStatic
-import io.mockk.any
-import io.mockk.capture
-import com.mobile.diary.DiaryBean
+
 
 class WriteDiaryActivityTest {
 
