@@ -66,7 +66,6 @@ class LocationUnitTest {
         // Invoke the method under test
         getLocation(latitude, longitude)
 
-
     }
 
 
