@@ -1,6 +1,8 @@
 package com.mobile.diary
+
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.tencent.mmkv.MMKV
 import io.mockk.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -17,7 +19,7 @@ class WriteDiaryActivityTest {
     fun setup() {
         mockMMKV = mockkClass(MMKV::class)
         writeDiaryActivity = spyk(WriteDiaryActivity()) // Use spyk to partially mock the activity
-        writeDiaryActivity.diaryList = ArrayList()
+        writeDiaryActivity.setDiaryList(ArrayList())
         mockkStatic(MMKV::class)
         every { MMKV.defaultMMKV() } returns mockMMKV
     }
@@ -108,8 +110,6 @@ class WriteDiaryActivityTest {
 
     // Helper method to capture the diaryList indirectly
     private fun WriteDiaryActivity.captureDiaryList(list: ArrayList<DiaryBean>) {
-        diaryList = list
+        setDiaryList(list)
     }
 }
-
-
