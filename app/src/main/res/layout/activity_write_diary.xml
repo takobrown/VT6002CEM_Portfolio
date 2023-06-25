@@ -137,7 +137,7 @@
                     android:textColor="@color/blue" />
 
                 <TextView
-                    android:id="@+id/select_albums"
+                    android:id="@+id/selectAlbums"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
