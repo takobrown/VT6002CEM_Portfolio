@@ -47,14 +47,14 @@ class WriteDiaryActivity : AppCompatActivity() {
         requestPer()
 
         inflate.takephoto.setOnClickListener {
-            selectAblums()
+            selectAlbums()
         }
         inflate.selectAlbums.setOnClickListener {
             takePhoto()
         }
         inflate.clear.setOnClickListener {
             inflate.date.setText("")
-            inflate.location.text = "*"
+            inflate.location.text = "**"
             Glide.with(this@WriteDiaryActivity).load(R.mipmap.ic_add).into(inflate.iv)
             inflate.content.setText("")
 
@@ -62,18 +62,18 @@ class WriteDiaryActivity : AppCompatActivity() {
         }
 
         inflate.shared.setOnClickListener {
-            val sharedText = "this is pet diary!"
+            val sharedText = "This is pet diary!"
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_TEXT, sharedText)
 
-            startActivity(Intent.createChooser(shareIntent, "shared by diary"));
+            startActivity(Intent.createChooser(shareIntent, "Share"));
         }
 
         inflate.save.setOnClickListener {
 
             if (inflate.date.text.isNullOrEmpty() || inflate.location.text.equals("*") || diaryBean.photoPath.isNullOrEmpty() || inflate.content.text.isNullOrEmpty()) {
-                ToastUtils.showToast(this@WriteDiaryActivity, "please input！")
+                ToastUtils.showToast(this@WriteDiaryActivity, "Write down something with your pet...")
                 return@setOnClickListener
             }
 
@@ -143,7 +143,7 @@ class WriteDiaryActivity : AppCompatActivity() {
     }
 
 
-    private fun selectAblums() {
+    private fun selectAlbums() {
         PictureSelector.create(this).openCamera(SelectMimeType.ofImage())
             .setLanguage(LanguageConfig.ENGLISH)
             .forResult(object : OnResultCallbackListener<LocalMedia?> {
@@ -282,6 +282,10 @@ class WriteDiaryActivity : AppCompatActivity() {
     }
 
     fun DiaryList(arrayList: Any) {
+
+    }
+
+    fun saveDiary(diaryBean: DiaryBean) {
 
     }
 
