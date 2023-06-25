@@ -34,9 +34,11 @@ import java.util.Calendar
 import java.util.Date
 
 
+
 class WriteDiaryActivity : AppCompatActivity() {
     private var diaryBean: DiaryBean = DiaryBean()
     private lateinit var inflate: ActivityWriteDiaryBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inflate = ActivityWriteDiaryBinding.inflate(layoutInflater)
@@ -122,6 +124,12 @@ class WriteDiaryActivity : AppCompatActivity() {
             }
             picker.show()
         }
+
+        // set the diaryList
+        fun setDiaryList(list: ArrayList<DiaryBean>) {
+            diaryList = list
+        }
+
     }
 
     private var diaryList: ArrayList<DiaryBean>? = null
