@@ -19,7 +19,7 @@ class WriteDiaryActivityTest {
     fun setup() {
         mockMMKV = mockkClass(MMKV::class)
         writeDiaryActivity = spyk(WriteDiaryActivity()) // Use spyk to partially mock the activity
-        writeDiaryActivity.setDiaryList(ArrayList())
+        writeDiaryActivity.DiaryList(ArrayList())
         mockkStatic(MMKV::class)
         every { MMKV.defaultMMKV() } returns mockMMKV
     }

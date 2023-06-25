@@ -281,5 +281,9 @@ class WriteDiaryActivity : AppCompatActivity() {
         }
     }
 
+    fun DiaryList(arrayList: Any) {
+
+    }
+
 }
 
