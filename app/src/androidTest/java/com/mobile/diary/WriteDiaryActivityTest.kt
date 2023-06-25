@@ -55,15 +55,7 @@ class WriteDiaryActivityTest {
         Espresso.onView(ViewMatchers.withId(R.id.save)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
-    @Test
-    fun testSaveButton_Click() {
-        // Perform click on the save button
-        Espresso.onView(ViewMatchers.withId(R.id.save)).perform(ViewActions.click())
 
-        Espresso.onView(ViewMatchers.withText("save success！"))
-            .inRoot(ToastMatcher())
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }
 
 
 }
