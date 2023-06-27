@@ -1,7 +1,7 @@
 package com.mobile.diary;
 
-import com.github.gzuliyujiang.calendarpicker.core.Interval;
-import com.github.gzuliyujiang.calendarpicker.core.NumInterval;
+import java.util.calendarpicker.core.Interval;
+import java.util.calendarpicker.core.NumInterval;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
