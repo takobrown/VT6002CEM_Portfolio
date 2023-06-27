@@ -23,7 +23,6 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.luck.picture.lib.language.LanguageConfig
 import com.luck.picture.lib.utils.ToastUtils
 import com.mobile.diary.databinding.ActivityWriteDiaryBinding
-import com.tencent.mmkv.MMKV
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -33,11 +32,9 @@ import java.io.IOException
 import java.util.Calendar
 import java.util.Date
 
-
-
 class WriteDiaryActivity : AppCompatActivity() {
     private var diaryBean: DiaryBean = DiaryBean()
-    private lateinit var inflate: ActivityWriteDiaryBinding
+    lateinit var inflate: ActivityWriteDiaryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,12 +64,13 @@ class WriteDiaryActivity : AppCompatActivity() {
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_TEXT, sharedText)
 
-            startActivity(Intent.createChooser(shareIntent, "Share"));
+            startActivity(Intent.createChooser(shareIntent, "Share"))
         }
 
         inflate.save.setOnClickListener {
-
-            if (inflate.date.text.isNullOrEmpty() || inflate.location.text.equals("*") || diaryBean.photoPath.isNullOrEmpty() || inflate.content.text.isNullOrEmpty()) {
+            if (inflate.date.text.isNullOrEmpty() || inflate.location.text.equals("*") ||
+                diaryBean.photoPath.isNullOrEmpty() || inflate.content.text.isNullOrEmpty()
+            ) {
                 ToastUtils.showToast(this@WriteDiaryActivity, "Write down something with your pet...")
                 return@setOnClickListener
             }
@@ -81,17 +79,19 @@ class WriteDiaryActivity : AppCompatActivity() {
             diaryBean.date = inflate.date.text.toString()
             diaryBean.location = inflate.location.text.toString()
 
-
             diaryList?.add(0, diaryBean)
 
             val toJson = Gson().toJson(diaryList)
 
-            MMKV.defaultMMKV().encode("data", toJson)
-            ToastUtils.showToast(this@WriteDiaryActivity, "save success！")
+            val sharedPreferences = getSharedPreferences("MyDiaryPreferences", MODE_PRIVATE)
+            sharedPreferences.edit().putString("data", toJson).apply()
+
+            ToastUtils.showToast(this@WriteDiaryActivity, "save success!")
             finish()
         }
 
-        val data = MMKV.defaultMMKV().decodeString("data")
+        val sharedPreferences = getSharedPreferences("MyDiaryPreferences", MODE_PRIVATE)
+        val data = sharedPreferences.getString("data", "")
 
         val listType = object : TypeToken<ArrayList<DiaryBean?>?>() {}.type
         diaryList = if (data.isNullOrEmpty()) {
@@ -129,11 +129,9 @@ class WriteDiaryActivity : AppCompatActivity() {
         fun setDiaryList(list: ArrayList<DiaryBean>) {
             diaryList = list
         }
-
     }
 
     private var diaryList: ArrayList<DiaryBean>? = null
-
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -141,7 +139,6 @@ class WriteDiaryActivity : AppCompatActivity() {
             Glide.with(this@WriteDiaryActivity).load(Constants.PHOTO_PATH).into(inflate.iv)
         }
     }
-
 
     private fun selectAlbums() {
         PictureSelector.create(this).openCamera(SelectMimeType.ofImage())
@@ -200,14 +197,12 @@ class WriteDiaryActivity : AppCompatActivity() {
 
         if (requestCode == 1) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                 if (ActivityCompat.checkSelfPermission(
                         this, Manifest.permission.ACCESS_FINE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                         this, Manifest.permission.ACCESS_COARSE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-
                     locationManager.requestLocationUpdates(
                         LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener
                     )
@@ -219,7 +214,7 @@ class WriteDiaryActivity : AppCompatActivity() {
     private lateinit var locationManager: LocationManager
     private lateinit var locationListener: LocationListener
 
-    private fun getLocation() {
+    fun getLocation() {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
@@ -240,7 +235,6 @@ class WriteDiaryActivity : AppCompatActivity() {
 
                     override fun onResponse(call: Call, response: Response) {
                         if (response.isSuccessful) {
-                            //val string = response.body()?.string()
                             val string = response.body?.string()
                             val fromJson = Gson().fromJson(string, AddressBean::class.java)
                             val get = fromJson?.data?.get(0)
@@ -254,7 +248,6 @@ class WriteDiaryActivity : AppCompatActivity() {
                 if (locationManager != null && locationListener != null) {
                     locationManager.removeUpdates(locationListener)
                 }
-
             }
 
             override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
@@ -271,7 +264,6 @@ class WriteDiaryActivity : AppCompatActivity() {
                 LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener
             )
         }
-
     }
 
     override fun onDestroy() {
@@ -289,6 +281,4 @@ class WriteDiaryActivity : AppCompatActivity() {
     fun saveDiary(diaryBean: DiaryBean) {
 
     }
-
 }
-
